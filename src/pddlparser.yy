@@ -3,7 +3,7 @@
 %require "3.0.4"
 
 %defines
-%define parser_class_name {PDDLParser}
+%define api.parser.class {PDDLParser}
 %define api.token.constructor
 %define api.value.type variant
 %define parse.assert

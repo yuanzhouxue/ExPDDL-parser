@@ -1,24 +1,21 @@
 #include "pddldriver.hh"
+
 #include "pddlparser.tab.hh"
 
 using namespace std;
 
-PDDLDriver::PDDLDriver()
-{
+PDDLDriver::PDDLDriver() {
     trace_parsing = trace_scanning = false;
     domain = nullptr;
     problem = nullptr;
 }
 
-PDDLDriver::~PDDLDriver ()
-{
-    if (domain)  delete domain;
+PDDLDriver::~PDDLDriver() {
+    if (domain) delete domain;
     if (problem) delete problem;
 }
 
-int
-PDDLDriver::parse(const string &f)
-{
+int PDDLDriver::parse(const string& f) {
     file = f;
     scan_begin();
     yy::PDDLParser parser(*this);
@@ -28,14 +25,8 @@ PDDLDriver::parse(const string &f)
     return result;
 }
 
-void
-PDDLDriver::error(const yy::location& l, const string& m)
-{
+void PDDLDriver::error(const yy::location& l, const string& m) {
     cerr << l << ": " << m << endl;
 }
 
-void
-PDDLDriver::error(const string& m)
-{
-    cerr << m << endl;
-}
+void PDDLDriver::error(const string& m) { cerr << m << endl; }
