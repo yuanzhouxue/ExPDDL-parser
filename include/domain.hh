@@ -22,6 +22,7 @@ public:
 private:
 	std::string               _name;
 	std::vector<std::string> *_requirements;
+	// std::vector<std::string> *_types;
 	std::vector<Predicate*>  *_predicates;
 	std::vector<Action*>     *_actions;
 };

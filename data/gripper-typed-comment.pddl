@@ -33,36 +33,41 @@
 	(:action drop
 		:parameters (?obj - ball ?room - room)
 		:precondition (and
-			(carry ?obj ?gripper)
+			(carry ?obj ?gripper) ; true
 			(at-robby ?room)
 		)
 		:effect (and
 			(at ?obj ?room)
 			(free ?gripper)
-			(not (carry ?obj ?gripper))
+			(not (carry ?obj ?gripper)) ; false
 		)
 	)
 
 	(:action move
 		:parameters (?from ?to - room)
 		:precondition (and
-			(at-robby ?from)
+			(at-robby ?from) ; true
 		)
 		:effect (and
 			(at-robby ?to)
-			(not (at-robby ?from))
+			(not (at-robby ?from)) ; false
 		)
 	)
 
 	(:action look
-		:parameters (?obj - ball ?room - room ?gripper - gripper)
+		:parameters (?obj - ball ?room - room)
 		:precondition (and
 			(at-robby ?room)
-			(no (at ?obj ?room))
+			(no (at ?obj ?room)) ; unknown
 		)
 		:effect (and
-			(K (at ?obj ?room))
+			(K (at ?obj ?room)) ; known
 		)
+
+		; :effect (or
+		; 	(at ?obj ?room)
+		; 	(not (at ?obj ?room))
+		; )
 	)
 
 )

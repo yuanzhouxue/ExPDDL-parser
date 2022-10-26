@@ -2,12 +2,12 @@
 #define __PREDICATE_HH__
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
 using StringList = std::vector<std::string>;
-using TypeDict = std::map<std::string, std::string>;
+using TypeDict = std::unordered_map<std::string, std::string>;
 using ArgumentList = std::pair<StringList*, TypeDict*>;
 
 class Predicate {

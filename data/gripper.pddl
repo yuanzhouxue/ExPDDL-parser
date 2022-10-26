@@ -27,8 +27,19 @@
 
 	(:action pick-up
 		:parameters (?x ?y ?z)
-		:precondition (and (BALL ?x) (ROOM ?y) (GRIPPER ?z) (at-ball ?x ?y) (at-robby ?y) (free ?z))
-		:effect (and (carry ?z ?x) (not (at-ball ?x ?y)) (not (free ?z)))
+		:precondition (and
+			(BALL ?x)
+			(ROOM ?y)
+			(GRIPPER ?z)
+			(at-ball ?x ?y)
+			(at-robby ?y)
+			(free ?z)
+		)
+		:effect (and
+			(carry ?z ?x)
+			(not (at-ball ?x ?y))
+			(not (free ?z))
+		)
 	)
 
 	(:action drop

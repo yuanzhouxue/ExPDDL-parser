@@ -37,23 +37,15 @@ ostream& operator<<(ostream& out, const Problem& problem) {
     out << endl;
     out << "Init: [" << endl;
     for (auto const& literal : *problem._init) {
-        if (literal->second) {
-            out << "  " << *(literal->first);
-        } else {
-            out << "  NOT " << *(literal->first);
-        }
-        out << endl;
+        out << to_string(literal->second);
+        out << *(literal->first) << endl;
     }
     out << "]" << endl;
     out << endl;
     out << "Goal: [" << endl;
     for (auto const& literal : *problem._goal) {
-        if (literal->second) {
-            out << "  " << *(literal->first);
-        } else {
-            out << "  NOT " << *(literal->first);
-        }
-        out << endl;
+        out << to_string(literal->second);
+        out << *(literal->first) << endl;
     }
     out << "]" << endl;
 

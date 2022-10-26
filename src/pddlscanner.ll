@@ -26,6 +26,7 @@ name      [a-zA-Z][a-zA-Z_0-9\-]*
 variable  \?[a-zA-Z][a-zA-Z_0-9\-]*
 int       [0-9]+
 blank     [ \t]
+comment   ;.*$
 
 requirekey (":strips"|":typing"|":equality")
 
@@ -66,6 +67,8 @@ loc.step ();
 
 "and"|"AND"           { return yy::PDDLParser::make_AND(loc); };
 "not"|"NOT"           { return yy::PDDLParser::make_NOT(loc); };
+"no"|"NO"             { return yy::PDDLParser::make_NO(loc); };
+"K"|"K"               { return yy::PDDLParser::make_K(loc); };
 "="                   { return yy::PDDLParser::make_EQUAL(loc); };
 
 {requirekey}          { return yy::PDDLParser::make_REQUIREKEY(yytext, loc); };
@@ -76,6 +79,7 @@ loc.step ();
 
 {name}                { return yy::PDDLParser::make_NAME(yytext, loc); };
 {variable}            { return yy::PDDLParser::make_VARIABLE(yytext, loc); };
+{comment}             ;
 
 {int} {
     errno = 0;

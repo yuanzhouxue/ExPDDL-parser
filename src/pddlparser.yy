@@ -1,6 +1,6 @@
 %skeleton "lalr1.cc" /* -*- C++ -*- */
 
-%require "3.0.4"
+%require "3.2"
 
 %defines
 %define api.parser.class {PDDLParser}
@@ -20,14 +20,14 @@
 #include "predicate.hh"
 
 using StringList    = std::vector<std::string>;
-using TypeDict      = std::map<std::string,std::string>;
+using TypeDict      = std::unordered_map<std::string,std::string>;
 
 using ActionList    = std::vector<Action*>;
 using PredicateList = std::vector<Predicate*>;
 using ParameterList = std::pair<StringList*,TypeDict*>;
 using ArgumentList  = std::pair<StringList*,TypeDict*>;
 
-using Literal       = std::pair<Predicate*,bool>;
+using Literal       = std::pair<Predicate*, LiteralState>;
 using LiteralList   = std::vector<Literal*>;
 using ActionDefBody = std::pair<LiteralList*,LiteralList*>;
 
@@ -74,6 +74,8 @@ class PDDLDriver;
     EFFECTS         "effects"
     AND             "and"
     NOT             "not"
+    NO              "no"
+    K               "K"
     EQUAL           "="
     OBJECTS         "objects"
     INIT            "init"
@@ -167,7 +169,9 @@ domain-body
 requirements-def: LPAREN REQUIREMENTS requirekeys-list RPAREN { $$ = $3; } ;
 
 types
-    : LPAREN TYPES names-list RPAREN {}
+    : LPAREN TYPES names-list RPAREN {
+        
+    }
     | LPAREN TYPES typed-names-list RPAREN {}
     ;
 
@@ -341,13 +345,17 @@ grounded-predicate
     ;
 
 literal
-    : predicate { $$ = new Literal($1, true); }
-    | LPAREN NOT predicate RPAREN { $$ = new Literal($3, false); }
+    : predicate { $$ = new Literal($1, LiteralState::POSITIVE); }
+    | LPAREN NOT predicate RPAREN { $$ = new Literal($3, LiteralState::NEGATIVE); }
+    | LPAREN NO predicate RPAREN { $$ = new Literal($3, LiteralState::UNKNOWN); }
+    | LPAREN K predicate RPAREN { $$ = new Literal($3, LiteralState::KNOWN); }
     ;
 
 grounded-literal
-    : grounded-predicate { $$ = new Literal($1, true); }
-    | LPAREN NOT grounded-predicate RPAREN { $$ = new Literal($3, false); }
+    : grounded-predicate { $$ = new Literal($1, LiteralState::POSITIVE); }
+    | LPAREN NOT grounded-predicate RPAREN { $$ = new Literal($3, LiteralState::NEGATIVE); }
+    | LPAREN NO grounded-predicate RPAREN { $$ = new Literal($3, LiteralState::UNKNOWN); }
+    | LPAREN K grounded-predicate RPAREN { $$ = new Literal($3, LiteralState::KNOWN); }
     ;
 
 

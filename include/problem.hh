@@ -7,9 +7,10 @@
 #include <vector>
 
 #include "predicate.hh"
+#include "action.hh"
 
 using StringList = std::vector<std::string>;
-using Literal = std::pair<Predicate *, bool>;
+using Literal = std::pair<Predicate *, LiteralState>;
 using LiteralList = std::vector<Literal *>;
 
 class Problem {

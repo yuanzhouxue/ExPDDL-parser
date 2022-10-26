@@ -2,6 +2,23 @@
 
 using namespace std;
 
+std::string to_string(LiteralState s) {
+	switch (s) {
+		case LiteralState::NEGATIVE:
+			return "NOT ";
+			break;
+		case LiteralState::UNKNOWN:
+			return "UNKNOWN ";
+			break;
+		case LiteralState::KNOWN:
+			return "KNOWN ";
+			break;
+		default:
+			break;
+	}
+	return "";
+}
+
 Action::Action(const string& name, const ParameterList* params,
                const PreconditionList* precond, const EffectList* effects)
     : _name(name),
@@ -49,13 +66,13 @@ ostream& operator<<(ostream& out, const Action& action) {
     for (decltype(size) i = 0; i < size; ++i) {
         auto literal = (*action._precond)[i];
         auto predicate = literal->first;
-        bool positive = literal->second;
+        auto state = literal->second;
         if (i == 0) {
-            if (!positive) out << "NOT ";
+            out << to_string(state);
             out << *predicate;
         } else {
             out << ", ";
-            if (!positive) out << "NOT ";
+            out << to_string(state);
             out << *predicate;
         }
     }
@@ -65,13 +82,13 @@ ostream& operator<<(ostream& out, const Action& action) {
     for (decltype(size) i = 0; i < size; ++i) {
         auto literal = (*action._effects)[i];
         auto predicate = literal->first;
-        bool positive = literal->second;
+        auto state = literal->second;
         if (i == 0) {
-            if (!positive) out << "NOT ";
+            out << to_string(state);
             out << *predicate;
         } else {
             out << ", ";
-            if (!positive) out << "NOT ";
+            out << to_string(state);
             out << *predicate;
         }
     }
