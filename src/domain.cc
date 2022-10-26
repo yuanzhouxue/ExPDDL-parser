@@ -28,9 +28,18 @@ void Domain::set_predicates(std::vector<Predicate*>* predicates) {
 
 void Domain::set_actions(std::vector<Action*>* actions) { _actions = actions; }
 
+void Domain::set_types(std::unordered_set<std::string>* types) {
+    _types = types;
+};
+
 std::ostream& operator<<(std::ostream& out, const Domain& domain) {
     out << ">> Domain(name:" << domain._name << ")" << endl;
     out << endl;
+    out << "Types: [";
+    for (const auto& t : *domain._types) {
+        out << " " << t;
+    }
+    out << "]" << endl;
     out << "Requirements: [";
     for (auto const& requirement : *domain._requirements) {
         out << " " << requirement;

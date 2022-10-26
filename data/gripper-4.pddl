@@ -25,9 +25,11 @@
 	)
 
 	(:goal
-		(and (at-ball ball1 roomb)
+		(and
+			(at-ball ball1 roomb)
 			(at-ball ball2 roomb)
 			(at-ball ball3 roomb)
-			(at-ball ball4 roomb))
+			(at-ball ball4 roomb)
+		)
 	)
 )

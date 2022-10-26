@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <unordered_set>
 
 #include "action.hh"
 
@@ -16,13 +17,14 @@ public:
 	void set_requirements(std::vector<std::string>* requirements);
 	void set_predicates(std::vector<Predicate*>* predicates);
 	void set_actions(std::vector<Action*>* actions);
+	void set_types(std::unordered_set<std::string>* types);
 
 	friend std::ostream &operator<<(std::ostream &os, const Domain &domain);
 
 private:
 	std::string               _name;
 	std::vector<std::string> *_requirements;
-	// std::vector<std::string> *_types;
+	std::unordered_set<std::string> *_types;
 	std::vector<Predicate*>  *_predicates;
 	std::vector<Action*>     *_actions;
 };

@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <unordered_set>
 
 #include "domain.hh"
 #include "problem.hh"
@@ -20,6 +21,7 @@
 #include "predicate.hh"
 
 using StringList    = std::vector<std::string>;
+using StringSet     = std::unordered_set<std::string>;
 using TypeDict      = std::unordered_map<std::string,std::string>;
 
 using ActionList    = std::vector<Action*>;
@@ -33,6 +35,7 @@ using ActionDefBody = std::pair<LiteralList*,LiteralList*>;
 
 using DomainBody    = struct {
     StringList     *requirements;
+    StringSet      *types;
     PredicateList  *predicates;
     ActionList     *actions;
 };
@@ -98,6 +101,7 @@ class PDDLDriver;
 %type <std::string>        problem-name             "problem-name"
 %type <std::string>        domain-reference         "domain-reference"
 
+%type <StringSet*>         types-list               "types-list"
 %type <ActionList*>        actions                  "actions"
 %type <Action*>            action-def               "action-def"
 %type <ActionDefBody*>     action-def-body          "action-def-body"
@@ -154,25 +158,34 @@ domain-def: LPAREN DEFINE domain-name domain-body RPAREN
         $$->set_requirements($4->requirements);
         $$->set_predicates($4->predicates);
         $$->set_actions($4->actions);
+        $$->set_types($4->types);
         delete $4;
     } ;
 
 domain-name: LPAREN DOMAIN NAME RPAREN { $$ = $3; } ;
 
 domain-body
-    : requirements-def predicates-def actions { $$ = new DomainBody{$1, $2, $3}; }
-    | requirements-def constants predicates-def actions { $$ = new DomainBody{$1, $3, $4}; }
-    | requirements-def types predicates-def actions { $$ = new DomainBody{$1, $3, $4}; }
-    | requirements-def types constants predicates-def actions { $$ = new DomainBody{$1, $4, $5}; }
+    : requirements-def predicates-def actions { $$ = new DomainBody{$1, nullptr, $2, $3}; }
+    | requirements-def constants predicates-def actions { $$ = new DomainBody{$1, nullptr, $3, $4}; }
+    | requirements-def types-list predicates-def actions { $$ = new DomainBody{$1, $2, $3, $4}; }
+    | requirements-def types-list constants predicates-def actions { $$ = new DomainBody{$1, $2, $4, $5}; }
     ;
 
 requirements-def: LPAREN REQUIREMENTS requirekeys-list RPAREN { $$ = $3; } ;
 
-types
+types-list
     : LPAREN TYPES names-list RPAREN {
-        
+        $$ = new StringSet;
+        for (const auto& t : *$3) {
+            $$->insert(t);
+        }
     }
-    | LPAREN TYPES typed-names-list RPAREN {}
+    | LPAREN TYPES typed-names-list RPAREN {
+        $$ = new StringSet;
+        for (const auto& t : *$3) {
+            $$->insert(t.second);
+        }
+    }
     ;
 
 constants
