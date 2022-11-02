@@ -2,7 +2,9 @@
 	(:domain gripper)
 
 	(:objects
-		rooma roomb ball1 ball2 ball3 ball4 left right
+		rooma roomb - room
+		ball1 ball2 ball3 ball4 - ball
+		left right - gripper
 	)
 
 	(:init

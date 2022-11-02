@@ -30,7 +30,7 @@ void Domain::set_actions(std::vector<Action*>* actions) { _actions = actions; }
 
 void Domain::set_types(std::unordered_set<std::string>* types) {
     _types = types;
-};
+}
 
 std::ostream& operator<<(std::ostream& out, const Domain& domain) {
     out << ">> Domain(name:" << domain._name << ")" << endl;

@@ -1,9 +1,11 @@
+#include <utility>
+
 #include "problem.hh"
 
 using namespace std;
 
-Problem::Problem(const string& name, const string& domain)
-    : _name(name), _domain(domain) {}
+Problem::Problem(string name, string domain)
+    : _name(std::move(name)), _domain(std::move(domain)) {}
 
 Problem::~Problem() {
     delete _objects;
@@ -19,7 +21,7 @@ Problem::~Problem() {
     delete _goal;
 }
 
-void Problem::set_objects(StringList* objects) { _objects = objects; }
+void Problem::set_objects(TypeDict* objects) { _objects = objects; }
 
 void Problem::set_init_state(LiteralList* init) { _init = init; }
 
@@ -31,7 +33,7 @@ ostream& operator<<(ostream& out, const Problem& problem) {
     out << endl;
     out << "Objects: [";
     for (auto const& object : *problem._objects) {
-        out << " " << object;
+        out << " " << object.first << "-" << object.second;
     }
     out << " ]" << endl;
     out << endl;

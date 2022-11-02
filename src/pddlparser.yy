@@ -133,7 +133,7 @@ class PDDLDriver;
 %type <StringList*>        names-list               "names-list"
 %type <TypeDict*>          typed-names-list         "typed-names-list"
 
-%type <StringList*>        objects-def              "objects-def"
+%type <TypeDict*>          objects-def              "objects-def"
 
 %type <LiteralList*>       init-def                 "init-def"
 %type <LiteralList*>       goal-def                 "goal-def"
@@ -251,7 +251,7 @@ problem-name: LPAREN PROBLEM NAME RPAREN { $$ = $3; } ;
 
 domain-reference: LPAREN DOMAIN NAME RPAREN { $$ = $3; } ;
 
-objects-def: LPAREN OBJECTS names-list RPAREN { $$ = $3; } ;
+objects-def : LPAREN OBJECTS typed-names-list RPAREN { $$ = $3; } ;
 
 init-def: LPAREN INIT grounded-literal-list RPAREN { $$ = $3; } ;
 
@@ -268,8 +268,22 @@ names-list
     ;
 
 typed-names-list
-    : names-list HYPHEN NAME {}
-    | typed-names-list names-list HYPHEN NAME {}
+    : names-list HYPHEN NAME {
+        std::string type($3);
+        $$ = new TypeDict;
+        for (const auto& var : *$1) {
+            (*$$)[var] = type;
+        }
+    }
+    | typed-names-list names-list HYPHEN NAME {
+        {
+            std::string type($4);
+            for (const auto& var : *$2) {
+                (*$1)[var] = type;
+            }
+            $$ = $1;
+        }
+    }
     ;
 
 variables-list

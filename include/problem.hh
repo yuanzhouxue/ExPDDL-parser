@@ -12,24 +12,24 @@
 using StringList = std::vector<std::string>;
 using Literal = std::pair<Predicate *, LiteralState>;
 using LiteralList = std::vector<Literal *>;
+using TypeDict      = std::unordered_map<std::string,std::string>;
 
 class Problem {
    public:
-    Problem(const std::string &name, const std::string &domain);
+    Problem(std::string name, std::string domain);
     virtual ~Problem();
 
-    void set_objects(StringList *objects);
+    void set_objects(TypeDict *objects);
 
     void set_init_state(LiteralList *init);
     void set_goal_state(LiteralList *goal);
 
     friend std::ostream &operator<<(std::ostream &out, const Problem &problem);
 
-   private:
     std::string _name;
     std::string _domain;
 
-    StringList *_objects;
+    TypeDict *_objects;
     LiteralList *_init;
     LiteralList *_goal;
 };

@@ -7,8 +7,9 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
 
-include_directories(include)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+set(include_dirs ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR})
+#foreach(include_dirs)
+include_directories(${include_dirs})
 
 add_compile_options(-Wall -Wextra -pedantic -O2 -Wno-macro-redefined)
 
@@ -31,7 +32,7 @@ flex_target(
     ${CMAKE_CURRENT_BINARY_DIR}/pddllex.yy.cc
 )
 
-add_library(libpddlparser 
+add_library(libpddlparser SHARED
     ${SOURCES}
     ${FLEX_pddllex_OUTPUTS}
     ${BISON_pddlparser_OUTPUTS}
@@ -40,3 +41,5 @@ target_link_libraries(libpddlparser ${FLEX_LIBRARIES})
 
 add_executable(pddl src/main.cc)
 target_link_libraries(pddl libpddlparser)
+
+set(libpddlparser_INCLUDE_DIRS ${include_dirs} PARENT_SCOPE)

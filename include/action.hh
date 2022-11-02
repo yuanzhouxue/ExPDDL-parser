@@ -30,7 +30,6 @@ class Action {
 
     friend std::ostream &operator<<(std::ostream &out, const Action &action);
 
-   private:
     std::string _name;
     const StringList *_params;
     const TypeDict *_types;

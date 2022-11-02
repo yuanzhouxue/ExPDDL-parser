@@ -11,7 +11,7 @@
 
 class Domain {
 public:
-	Domain(const std::string &name);
+	explicit Domain(const std::string &name);
 	virtual ~Domain();
 
 	void set_requirements(std::vector<std::string>* requirements);
@@ -21,7 +21,6 @@ public:
 
 	friend std::ostream &operator<<(std::ostream &os, const Domain &domain);
 
-private:
 	std::string               _name;
 	std::vector<std::string> *_requirements;
 	std::unordered_set<std::string> *_types;
