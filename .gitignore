@@ -3,6 +3,7 @@
 pddl
 pddl.dSYM/
 bin/
+build/
 *.tab.hh
 location.hh
 position.hh

@@ -2,3 +2,4 @@ clang
 %cpp -std=c++11
 -Iinclude
 -Isrc
+-Ibuild
