@@ -28,6 +28,7 @@ using ActionList    = std::vector<Action*>;
 using PredicateList = std::vector<Predicate*>;
 using ParameterList = std::pair<StringList*,TypeDict*>;
 using ArgumentList  = std::pair<StringList*,TypeDict*>;
+using PairList      = std::vector<std::pair<std::string, std::string>>;
 
 using Literal       = std::pair<Predicate*, LiteralState>;
 using LiteralList   = std::vector<Literal*>;
@@ -127,7 +128,7 @@ class PDDLDriver;
 %type <PredicateList*>     predicates-list          "predicates-list"
 %type <ParameterList*>     parameters-list          "parameters-list"
 
-%type <TypeDict*>          typed-variables-list     "typed-variables-list"
+%type <PairList*>          typed-variables-list     "typed-variables-list"
 %type <StringList*>        variables-list           "variables-list"
 
 %type <StringList*>        names-list               "names-list"
@@ -215,10 +216,12 @@ parameters-list
     : PARAMETERS LPAREN typed-variables-list RPAREN
         {
             StringList *parameters = new StringList();
+            TypeDict* dict = new TypeDict;
             for (const auto& param : *$3) {
                 parameters->push_back(param.first);
+                dict->emplace(param.first, param.second);
             }
-            $$ = new ParameterList(parameters, $3);
+            $$ = new ParameterList(parameters, dict);
         }
     | PARAMETERS LPAREN variables-list RPAREN
         {
@@ -295,16 +298,16 @@ typed-variables-list
     : variables-list HYPHEN NAME
         {
             std::string type($3);
-            $$ = new TypeDict;
+            $$ = new PairList;
             for (const auto& var : *$1) {
-                (*$$)[var] = type;
+                (*$$).emplace_back(var, type);
             }
         }
     | typed-variables-list variables-list HYPHEN NAME
         {
             std::string type($4);
             for (const auto& var : *$2) {
-                (*$1)[var] = type;
+                (*$1).emplace_back(var, type);
             }
             $$ = $1;
         }
@@ -334,10 +337,12 @@ predicate
     : LPAREN NAME typed-variables-list RPAREN
         {
             StringList *vars = new StringList;
+            TypeDict* dict = new TypeDict;
             for (const auto& var : *$3) {
                 vars->push_back(var.first);
+                dict->emplace(var.first, var.second);
             }
-            auto args = new ArgumentList(vars, $3);
+            auto args = new ArgumentList(vars, dict);
             $$ = new Predicate($2, args);
         }
     | LPAREN NAME variables-list RPAREN
