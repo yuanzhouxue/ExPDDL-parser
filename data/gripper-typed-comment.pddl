@@ -31,7 +31,7 @@
 	)
 	
 	(:action drop
-		:parameters (?obj - ball ?room - room)
+		:parameters (?obj - ball ?room - room ?gripper - gripper)
 		:precondition (and
 			(carry ?obj ?gripper) ; true
 			(at-robby ?room)
