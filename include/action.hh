@@ -31,8 +31,8 @@ class Action {
     friend std::ostream &operator<<(std::ostream &out, const Action &action);
 
     std::string _name;
-    const StringList *_params;
-    const TypeDict *_types;
+    StringList *_params;
+    TypeDict *_types;
     const PreconditionList *_precond;
     const EffectList *_effects;
 };

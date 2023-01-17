@@ -25,7 +25,16 @@ Action::Action(const string& name, const ParameterList* params,
       _params(params->first),
       _types(params->second),
       _precond(precond),
-      _effects(effects) {}
+      _effects(effects) {
+    for (auto& para : *_params) {
+        if (para[0] == '?') {
+            auto temp = _types->at(para);
+            _types->erase(para);
+            para = para.substr(1);
+            _types->emplace(para, temp);
+        }
+    }
+}
 
 Action::~Action() {
     if (_params) delete _params;
