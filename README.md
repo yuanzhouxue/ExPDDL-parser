@@ -1,4 +1,4 @@
-ExPDDL parser
+# ExPDDL parser
 
 Supports for ExPDDL parsing, written in C++ based on Flex and Bison. This parser supports the following features:
 
