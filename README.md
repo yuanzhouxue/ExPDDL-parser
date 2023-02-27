@@ -1,3 +1,18 @@
+ExPDDL parser
+
+Supports for ExPDDL parsing, written in C++ based on Flex and Bison. This parser supports the following features:
+
+* Extra keywords: UNKNOWN and KNOWN
+* Comments
+* Ordered action parameters
+
+
+
+This repo is based on [this project](https://github.com/thiagopbueno/pddlparser-pp). Original readme：
+
+---
+
+
 # pddlparser-pp
 
 Domain and problem **PDDL parser** in C/C++ using **Flex & Bison**.
