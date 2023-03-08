@@ -1,15 +1,19 @@
-中文 | [English](README_en.md)
+[中文](README.md) | English
 
-# ExPDDL解析器
+# ExPDDL parser
 
-支持ExPDDL文件的解析器，使用C++编写，基于Flex和Bison。解析器目前支持以下特性：
-* 新关键字：UNKNOWN和KNOWN
-* 支持以英文分号开头的行注释
-* 行为参数支持排序
+Supports for ExPDDL parsing, written in C++ based on Flex and Bison. This parser supports the following features:
 
-此项目基于开源项目[pddlparser-pp](https://github.com/thiagopbueno/pddlparser-pp)开发，原本的README如下：
+* Extra keywords: UNKNOWN and KNOWN
+* Comments
+* Ordered action parameters
+
+
+
+This repo is based on [this project](https://github.com/thiagopbueno/pddlparser-pp). Original readme：
 
 ---
+
 
 # pddlparser-pp
 
